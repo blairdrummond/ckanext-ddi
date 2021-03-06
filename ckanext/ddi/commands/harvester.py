@@ -94,7 +94,7 @@ class Harvester(CkanCommand):
         self.admin_user = get_action('get_site_user')(context,{})
 
 
-        print ''
+        print('')
 
         if len(self.args) == 0:
             self.parser.print_usage()
@@ -142,7 +142,7 @@ class Harvester(CkanCommand):
         elif cmd == 'reindex':
             self.reindex()
         else:
-            print 'Command %s not recognized' % cmd
+            print('Command %s not recognized' % cmd)
 
     def _load_config(self):
         super(Harvester, self)._load_config()
@@ -151,22 +151,22 @@ class Harvester(CkanCommand):
         from ckanext.harvest.model import setup as db_setup
         db_setup()
 
-        print 'DB tables created'
+        print('DB tables created')
 
     def create_harvest_source(self):
 
         if len(self.args) >= 2:
-            url = unicode(self.args[1])
+            url = str(self.args[1])
         else:
-            print 'Please provide a source URL'
+            print('Please provide a source URL')
             sys.exit(1)
         if len(self.args) >= 3:
-            type = unicode(self.args[2])
+            type = str(self.args[2])
         else:
-            print 'Please provide a source type'
+            print('Please provide a source type')
             sys.exit(1)
         if len(self.args) >= 4:
-            config = unicode(self.args[3])
+            config = str(self.args[3])
         else:
             config = None
         if len(self.args) >= 5:
@@ -175,15 +175,15 @@ class Harvester(CkanCommand):
         else:
             active = True
         if len(self.args) >= 6:
-            user_id = unicode(self.args[5])
+            user_id = str(self.args[5])
         else:
-            user_id = u''
+            user_id = ''
         if len(self.args) >= 7:
-            publisher_id = unicode(self.args[6])
+            publisher_id = str(self.args[6])
         else:
-            publisher_id = u''
+            publisher_id = ''
         if len(self.args) >= 8:
-            frequency = unicode(self.args[7])
+            frequency = str(self.args[7])
             if not frequency:
                 frequency = 'MANUAL'
         else:
@@ -200,7 +200,7 @@ class Harvester(CkanCommand):
 
             context = {'model':model, 'session':model.Session, 'user': self.admin_user['name']}
             source = get_action('harvest_source_create')(context,data_dict)
-            print 'Created new harvest source:'
+            print('Created new harvest source:')
             self.print_harvest_source(source)
 
             sources = get_action('harvest_source_list')(context,{})
@@ -209,22 +209,22 @@ class Harvester(CkanCommand):
             # Create a harvest job for the new source if not regular job.
             if not data_dict['frequency']:
                 get_action('harvest_job_create')(context,{'source_id':source['id']})
-                print 'A new Harvest Job for this source has also been created'
+                print('A new Harvest Job for this source has also been created')
 
-        except ValidationError,e:
-           print 'An error occurred:'
-           print str(e.error_dict)
+        except ValidationError as e:
+           print('An error occurred:')
+           print(str(e.error_dict))
            raise e
 
     def remove_harvest_source(self):
         if len(self.args) >= 2:
-            source_id = unicode(self.args[1])
+            source_id = str(self.args[1])
         else:
-            print 'Please provide a source id'
+            print('Please provide a source id')
             sys.exit(1)
         context = {'model': model, 'user': self.admin_user['name'], 'session':model.Session}
         get_action('harvest_source_delete')(context,{'id':source_id})
-        print 'Removed harvest source: %s' % source_id
+        print('Removed harvest source: %s' % source_id)
 
     def list_harvest_sources(self):
         if len(self.args) >= 2 and self.args[1] == 'all':
@@ -241,17 +241,17 @@ class Harvester(CkanCommand):
 
     def create_harvest_job(self):
         if len(self.args) >= 2:
-            source_id = unicode(self.args[1])
+            source_id = str(self.args[1])
         else:
-            print 'Please provide a source id'
+            print('Please provide a source id')
             sys.exit(1)
 
         context = {'model': model,'session':model.Session, 'user': self.admin_user['name']}
         job = get_action('harvest_job_create')(context,{'source_id':source_id})
 
         self.print_harvest_job(job)
-        jobs = get_action('harvest_job_list')(context,{'status':u'New'})
-        self.print_there_are('harvest job', jobs, condition=u'New')
+        jobs = get_action('harvest_job_list')(context,{'status':'New'})
+        self.print_there_are('harvest job', jobs, condition='New')
 
     def list_harvest_jobs(self):
         context = {'model': model, 'user': self.admin_user['name'], 'session':model.Session}
@@ -269,7 +269,7 @@ class Harvester(CkanCommand):
     def import_stage(self):
 
         if len(self.args) >= 2:
-            source_id = unicode(self.args[1])
+            source_id = str(self.args[1])
         else:
             source_id = None
 
@@ -280,12 +280,12 @@ class Harvester(CkanCommand):
 
         objs = get_action('harvest_objects_import')(context,{'source_id':source_id})
 
-        print '%s objects reimported' % len(objs)
+        print('%s objects reimported' % len(objs))
 
     def create_harvest_job_all(self):
         context = {'model': model, 'user': self.admin_user['name'], 'session':model.Session}
         jobs = get_action('harvest_job_create_all')(context,{})
-        print 'Created %s new harvest jobs' % len(jobs)
+        print('Created %s new harvest jobs' % len(jobs))
 
     def reindex(self):
         context = {'model': model, 'user': self.admin_user['name']}
@@ -294,48 +294,48 @@ class Harvester(CkanCommand):
 
     def print_harvest_sources(self, sources):
         if sources:
-            print ''
+            print('')
         for source in sources:
             self.print_harvest_source(source)
 
     def print_harvest_source(self, source):
-        print 'Source id: %s' % source['id']
-        print '      url: %s' % source['url']
-        print '     type: %s' % source['type']
-        print '   active: %s' % source['active']
-        print '     user: %s' % source['user_id']
-        print 'publisher: %s' % source['publisher_id']
-        print 'frequency: %s' % source['frequency']
-        print '     jobs: %s' % source['status']['job_count']
-        print ''
+        print('Source id: %s' % source['id'])
+        print('      url: %s' % source['url'])
+        print('     type: %s' % source['type'])
+        print('   active: %s' % source['active'])
+        print('     user: %s' % source['user_id'])
+        print('publisher: %s' % source['publisher_id'])
+        print('frequency: %s' % source['frequency'])
+        print('     jobs: %s' % source['status']['job_count'])
+        print('')
 
     def print_harvest_jobs(self, jobs):
         if jobs:
-            print ''
+            print('')
         for job in jobs:
             self.print_harvest_job(job)
 
     def print_harvest_job(self, job):
-        print '       Job id: %s' % job['id']
-        print '       status: %s' % job['status']
-        print '       source: %s' % job['source_id']
-        print '      objects: %s' % len(job.get('objects', []))
+        print('       Job id: %s' % job['id'])
+        print('       status: %s' % job['status'])
+        print('       source: %s' % job['source_id'])
+        print('      objects: %s' % len(job.get('objects', [])))
 
-        print 'gather_errors: %s' % len(job.get('gather_errors', []))
+        print('gather_errors: %s' % len(job.get('gather_errors', [])))
         for error in job.get('gather_errors', []):
-            print '               %s' % error['message']
+            print('               %s' % error['message'])
 
-        print ''
+        print('')
 
     def print_there_are(self, what, sequence, condition=''):
         is_singular = self.is_singular(sequence)
-        print 'There %s %s %s%s%s' % (
+        print('There %s %s %s%s%s' % (
             is_singular and 'is' or 'are',
             len(sequence),
             condition and ('%s ' % condition.lower()) or '',
             what,
             not is_singular and 's' or '',
-        )
+        ))
 
     def is_singular(self, sequence):
         return len(sequence) == 1

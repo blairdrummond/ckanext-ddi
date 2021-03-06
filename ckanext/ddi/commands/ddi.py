@@ -48,7 +48,7 @@ class DdiCommand(ckan.lib.cli.CkanCommand):
             sys.exit(1)
 
     def helpCmd(self):
-        print self.__doc__
+        print(self.__doc__)
 
     def configCmd(self):
         config_dict = get_ddi_config()
@@ -56,7 +56,7 @@ class DdiCommand(ckan.lib.cli.CkanCommand):
 
     def importCmd(self, path_or_url=None, license=None):
         if path_or_url is None:
-            print "Argument 'path_or_url' must be set"
+            print("Argument 'path_or_url' must be set")
             self.helpCmd()
             sys.exit(1)
         try:

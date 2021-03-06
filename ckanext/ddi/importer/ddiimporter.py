@@ -28,7 +28,7 @@ class DdiImporter(HarvesterBase):
             log.debug('Fetch file from %s' % url)
             try:
                 r = requests.get(url)
-            except requests.exceptions.RequestException, e:
+            except requests.exceptions.RequestException as e:
                 raise ContentFetchError(
                     'Error while getting URL %s: %r'
                     % (url, e)
@@ -65,7 +65,7 @@ class DdiImporter(HarvesterBase):
         pkg_dict = self.improve_pkg_dict(pkg_dict, params)
         try:
             return self.insert_or_update_pkg(pkg_dict, upload)
-        except Exception, e:
+        except Exception as e:
             raise ContentImportError(
                 'Could not import dataset %s: %s'
                 % (pkg_dict.get('name', ''), e)
@@ -111,7 +111,7 @@ class DdiImporter(HarvesterBase):
                         'url': '',
                     }
                 )
-            except Exception, e:
+            except Exception as e:
                 raise UploadError(
                     'Could not upload file: %s' % str(e)
                 )

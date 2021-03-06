@@ -4,7 +4,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
 import yaml
 from collections import OrderedDict
-from importer import ddiimporter
+from .importer import ddiimporter
 
 import logging
 from pylons import config
