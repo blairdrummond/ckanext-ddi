@@ -7,7 +7,7 @@ from collections import OrderedDict
 from .importer import ddiimporter
 
 import logging
-from pylons import config
+from ckantoolkit import config
 log = logging.getLogger(__name__)
 
 

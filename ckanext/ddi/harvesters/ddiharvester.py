@@ -9,7 +9,7 @@ from ckanext.harvest.model import HarvestObject
 from ckanext.harvest.harvesters import HarvesterBase
 from ckanext.ddi.importer import DdiCkanMetadata
 
-from pylons import config
+from ckantoolkit import config
 
 import logging
 log = logging.getLogger(__name__)

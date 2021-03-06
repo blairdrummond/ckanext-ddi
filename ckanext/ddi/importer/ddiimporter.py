@@ -10,7 +10,7 @@ from ckanext.ddi.importer import metadata
 import ckanapi
 
 import logging
-from pylons import config
+from ckantoolkit import config
 log = logging.getLogger(__name__)
 
 

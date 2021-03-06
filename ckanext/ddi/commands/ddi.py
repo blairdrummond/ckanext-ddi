@@ -32,7 +32,7 @@ class DdiCommand(ckan.lib.cli.CkanCommand):
     usage = __doc__
 
     def command(self):
-        # load pylons config
+        # load config
         self._load_config()
         options = {
             'import': self.importCmd,
